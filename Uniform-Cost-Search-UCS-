@@ -1,0 +1,51 @@
+import heapq
+
+def uniform_cost_search(graph, start, goal):
+    """
+   
+    # Priority queue to store (cost, path) tuples
+    queue = [(0, [start])]
+    visited = set()
+
+    while queue:
+        # Get the path with the lowest cost
+        cost, path = heapq.heappop(queue)
+        node = path[-1]
+
+        # If node is the goal, return the path and its cost
+        if node == goal:
+            return path, cost
+
+        # Skip if node is already visited
+        if node in visited:
+            continue
+
+        # Mark node as visited
+        visited.add(node)
+
+        # Expand neighbors
+        for neighbor, weight in graph.get(node, []):
+            if neighbor not in visited:
+                new_cost = cost + weight
+                new_path = path + [neighbor]
+                heapq.heappush(queue, (new_cost, new_path))
+
+    # Return None if goal is not reachable
+    return None, float('inf')
+
+# Example usage
+graph = {
+    'A': [('B', 1), ('C', 4)],
+    'B': [('A', 1), ('D', 2), ('E', 5)],
+    'C': [('A', 4), ('F', 3)],
+    'D': [('B', 2), ('G', 1)],
+    'E': [('B', 5), ('G', 2)],
+    'F': [('C', 3), ('G', 1)],
+    'G': [('D', 1), ('E', 2), ('F', 1)]
+}
+
+start = 'A'
+goal = 'G'
+path, cost = uniform_cost_search(graph, start, goal)
+print("Path:", path)
+print("Cost:", cost)
